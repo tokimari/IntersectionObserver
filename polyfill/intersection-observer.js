@@ -265,7 +265,9 @@ IntersectionObserver.prototype._monitorIntersections = function() {
     }
     else {
       addEvent(window, 'resize', this._checkForIntersections, true);
-      addEvent(document, 'scroll', this._checkForIntersections, true);
+      addEvent(
+        this.root || document, 'scroll', this._checkForIntersections, true
+      );
 
       if (this.USE_MUTATION_OBSERVER && 'MutationObserver' in window) {
         this._domObserver = new MutationObserver(this._checkForIntersections);
@@ -293,7 +295,9 @@ IntersectionObserver.prototype._unmonitorIntersections = function() {
     this._monitoringInterval = null;
 
     removeEvent(window, 'resize', this._checkForIntersections, true);
-    removeEvent(document, 'scroll', this._checkForIntersections, true);
+    removeEvent(
+      this.root || document, 'scroll', this._checkForIntersections, true
+    );
 
     if (this._domObserver) {
       this._domObserver.disconnect();
